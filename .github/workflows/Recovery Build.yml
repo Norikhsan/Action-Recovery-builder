@@ -87,6 +87,13 @@ jobs:
         echo "::set-output name=date::$(date +%F)"
       id: var
       
+     - name: Setup SSH Keys
+      if: ${{ startsWith(github.event.inputs.MANIFEST_URL, 'git@github.com') }}
+      uses: webfactory/ssh-agent@v0.5.4
+      with:
+          ssh-private-key: |
+              ${{ secrets.SSH_PRIVATE_KEY }}
+      
     - name: Install repo
       run: |
         mkdir ~/bin
